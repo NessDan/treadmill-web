@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Treadmill Controller</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="home.css" />
+  </head>
+  <body>
+    <form id="not-authed" class="hidden">
+      <label for="api-key-input">Treadmill API Key:</label>
+      <input
+        id="api-key-input"
+        name="api-key-input"
+        type="password"
+        placeholder="abc123"
+      />
+      <input type="submit" id="api-form-submit" value="Check &amp; Save" />
+    </form>
+
+    <div id="authed" class="hidden">
+      <form id="direct-settings">
+        <fieldset>
+          <legend>Direct Settings</legend>
+          <div class="speed-direct">
+            <label for="speed">Set speed:</label>
+            <input
+              type="number"
+              min="0"
+              max="20"
+              step="0.1"
+              id="speed"
+              name="speed"
+              placeholder="1.8"
+            />
+            <div class="current-info">
+              Speed is <span id="current-speed">?</span>mph
+            </div>
+          </div>
+          <div class="incline-direct">
+            <label for="incline">Set incline:</label>
+            <input
+              type="number"
+              min="0"
+              max="20"
+              step="0.1"
+              id="incline"
+              name="incline"
+              placeholder="1.8"
+            />
+            <div class="current-info">
+              Incline is <span id="current-incline">?</span>&deg;
+            </div>
+          </div>
+          <input
+            type="submit"
+            id="direct-settings-submit"
+            name="direct-settings-submit"
+            value="Change"
+          />
+        </fieldset>
+      </form>
+    </div>
+
+    <script type="text/javascript" src="home.js"></script>
+  </body>
+</html>

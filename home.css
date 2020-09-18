@@ -1,0 +1,13 @@
+* {
+  font-family: sans-serif;
+}
+
+.hidden {
+  display: none;
+}
+
+input {
+  border-radius: 10px;
+  padding: 6px;
+  font-size: 16px;
+}
