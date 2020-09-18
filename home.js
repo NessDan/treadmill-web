@@ -60,6 +60,8 @@ function setSpeedAndIncline(
     (res) => {
       handleBadResponses(res);
 
+      speedInput.value = "";
+
       res.text().then((speed) => {
         currentSpeedLabel.innerHTML = Number(speed);
       });
@@ -69,6 +71,8 @@ function setSpeedAndIncline(
   fetch(`${apiEndpoint}/setIncline?grade=${newGrade}`, requestOptions).then(
     (res) => {
       handleBadResponses(res);
+
+      inclineInput.value = "";
 
       res.text().then((speed) => {
         currentSpeedLabel.innerHTML = Number(speed);
