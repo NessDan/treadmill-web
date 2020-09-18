@@ -22,6 +22,7 @@ const inclineInput = document.querySelector("#incline");
 const changeSpeedAndInclineButton = document.querySelector(
   "#direct-settings-submit"
 );
+const stopButton = document.querySelector("#stop-submit");
 
 function getApiKey() {
   if (localStorage) {
@@ -51,10 +52,10 @@ function handleBadResponses(res) {
   }
 }
 
-function setSpeedAndIncline() {
-  const newSpeed = speedInput.value;
-  const newGrade = inclineInput.value;
-
+function setSpeedAndIncline(
+  newSpeed = speedInput.value,
+  newGrade = inclineInput.value
+) {
   fetch(`${apiEndpoint}/setSpeed?mph=${newSpeed}`, requestOptions).then(
     (res) => {
       handleBadResponses(res);
@@ -137,6 +138,12 @@ checkAndSaveApiKeySubmit.addEventListener("click", (e) => {
   initialKickstart();
 });
 
+stopButton.addEventListener("click", (e) => {
+  e.preventDefault();
+
+  setSpeedAndIncline(0, 0);
+});
+
 changeSpeedAndInclineButton.addEventListener("click", (e) => {
   e.preventDefault();
 
@@ -156,5 +163,7 @@ window.addEventListener("focus", (e) => {
     loopSpeedAndInclineCalls();
   }
 });
+
+stop - submit;
 
 initialKickstart();

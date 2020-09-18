@@ -8,12 +8,7 @@
   <body>
     <form id="not-authed" class="hidden">
       <label for="api-key-input">Treadmill API Key:</label>
-      <input
-        id="api-key-input"
-        name="api-key-input"
-        type="password"
-        placeholder="abc123"
-      />
+      <input id="api-key-input" name="api-key-input" type="password" />
       <input type="submit" id="api-form-submit" value="Check &amp; Save" />
     </form>
 
@@ -30,7 +25,6 @@
               step="0.1"
               id="speed"
               name="speed"
-              placeholder="1.8"
             />
             <div class="current-info">
               Speed is <span id="current-speed">?</span>mph
@@ -45,18 +39,25 @@
               step="0.1"
               id="incline"
               name="incline"
-              placeholder="1.8"
             />
             <div class="current-info">
               Incline is <span id="current-incline">?</span>&deg;
             </div>
           </div>
-          <input
-            type="submit"
-            id="direct-settings-submit"
-            name="direct-settings-submit"
-            value="Change"
-          />
+          <div class="button-group">
+            <input
+              type="submit"
+              id="direct-settings-submit"
+              name="direct-settings-submit"
+              value="Change"
+            />
+            <input
+              type="submit"
+              id="stop-submit"
+              name="stop-submit"
+              value="Stop"
+            />
+          </div>
         </fieldset>
       </form>
     </div>
