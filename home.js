@@ -164,6 +164,4 @@ window.addEventListener("focus", (e) => {
   }
 });
 
-stop - submit;
-
 initialKickstart();
