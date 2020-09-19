@@ -56,29 +56,33 @@ function setSpeedAndIncline(
   newSpeed = speedInput.value,
   newGrade = inclineInput.value
 ) {
-  fetch(`${apiEndpoint}/setSpeed?mph=${newSpeed}`, requestOptions).then(
-    (res) => {
-      handleBadResponses(res);
+  if (newSpeed !== "") {
+    fetch(`${apiEndpoint}/setSpeed?mph=${newSpeed}`, requestOptions).then(
+      (res) => {
+        handleBadResponses(res);
 
-      speedInput.value = "";
+        speedInput.value = "";
 
-      res.text().then((speed) => {
-        currentSpeedLabel.innerHTML = Number(speed);
-      });
-    }
-  );
+        res.text().then((speed) => {
+          currentSpeedLabel.innerHTML = Number(speed);
+        });
+      }
+    );
+  }
 
-  fetch(`${apiEndpoint}/setIncline?grade=${newGrade}`, requestOptions).then(
-    (res) => {
-      handleBadResponses(res);
+  if (newGrade !== "") {
+    fetch(`${apiEndpoint}/setIncline?grade=${newGrade}`, requestOptions).then(
+      (res) => {
+        handleBadResponses(res);
 
-      inclineInput.value = "";
+        inclineInput.value = "";
 
-      res.text().then((grade) => {
-        currentInclineLabel.innerHTML = Number(grade);
-      });
-    }
-  );
+        res.text().then((grade) => {
+          currentInclineLabel.innerHTML = Number(grade);
+        });
+      }
+    );
+  }
 }
 
 const requestSpeedAndIncline = () => {
