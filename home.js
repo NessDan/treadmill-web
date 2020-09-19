@@ -74,8 +74,8 @@ function setSpeedAndIncline(
 
       inclineInput.value = "";
 
-      res.text().then((speed) => {
-        currentSpeedLabel.innerHTML = Number(speed);
+      res.text().then((grade) => {
+        currentInclineLabel.innerHTML = Number(grade);
       });
     }
   );
