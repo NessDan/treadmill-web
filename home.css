@@ -32,7 +32,12 @@ input {
   width: 70px;
 }
 
+#stop-treadmill {
+  margin-top: 70px;
+}
+
 #stop-submit {
+  height: 70px;
   position: fixed;
   bottom: 2px;
   width: 100%;
