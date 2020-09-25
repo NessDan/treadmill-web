@@ -1,5 +1,11 @@
 * {
   font-family: sans-serif;
+  box-sizing: border-box;
+  font-size: 1.4rem;
+}
+
+body {
+  margin: 0;
 }
 
 .hidden {
@@ -9,5 +15,38 @@
 input {
   border-radius: 10px;
   padding: 6px;
-  font-size: 16px;
+  font-size: 1rem;
+}
+
+#current-status {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.current-info {
+  width: 50%;
+  text-align: center;
+}
+
+#direct-settings input[type="number"] {
+  width: 70px;
+}
+
+#stop-submit {
+  position: fixed;
+  bottom: 2px;
+  width: 100%;
+  font-size: 2rem;
+  background: darkred;
+  color: white;
+  border-radius: 0;
+  border: 3px solid black;
+}
+
+#stop-submit:focus {
+  outline: 3px solid orange;
+}
+
+#stop-submit:active {
+  background: #4e0000;
 }

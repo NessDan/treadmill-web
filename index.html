@@ -1,68 +1,154 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Treadmill Controller</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="manifest" href="manifest.json" />
-    <link rel="stylesheet" type="text/css" href="home.css" />
-  </head>
-  <body>
-    <form id="not-authed" class="hidden">
-      <label for="api-key-input">Treadmill API Key:</label>
-      <input id="api-key-input" name="api-key-input" type="password" />
-      <input type="submit" id="api-form-submit" value="Check &amp; Save" />
-    </form>
-
-    <div id="authed" class="hidden">
-      <form id="direct-settings">
-        <fieldset>
-          <legend>Direct Settings</legend>
+<head>
+  <title>Treadmill Controller</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" type="text/css" href="home.css" />
+</head>
+<body>
+  <form id="not-authed" class="hidden">
+    <label for="api-key-input">Treadmill API Key:</label>
+    <input id="api-key-input" name="api-key-input" type="password" />
+    <input type="submit" id="api-form-submit" value="Check &amp; Save" />
+  </form>
+  
+  <div id="authed" class="hidden">
+    <div id="current-status">
+      <div class="current-info"><span id="current-speed">?</span>mph
+      </div>
+      <div class="current-info"><span id="current-incline">?</span>&deg;&angle;
+      </div>
+    </div>
+    
+    <form id="direct-settings">
+      <fieldset>
+        <legend>Set Speed & Incline</legend>
+        <div class="labels-and-inputs">
           <div class="speed-direct">
-            <label for="speed">Set speed:</label>
+            <label for="speed">Speed:</label>
             <input
-              type="number"
-              min="0"
-              max="20"
-              step="0.1"
-              id="speed"
-              name="speed"
+            type="number"
+            min="0"
+            max="20"
+            step="0.1"
+            id="speed"
+            name="speed"
             />
-            <div class="current-info">
-              Speed is <span id="current-speed">?</span>mph
+            <label for="speed-direct" class="input-postfix">mph</span>
             </div>
-          </div>
-          <div class="incline-direct">
-            <label for="incline">Set incline:</label>
-            <input
+            <div class="incline-direct">
+              <label for="incline">Incline:</label>
+              <input
               type="number"
               min="0"
               max="20"
               step="0.1"
               id="incline"
               name="incline"
-            />
-            <div class="current-info">
-              Incline is <span id="current-incline">?</span>&deg;
+              />
+              <label for="incline-direct" class="input-postfix">&deg;&angle;</span>
+              </div>
             </div>
-          </div>
-          <div class="button-group">
-            <input
+            <div class="button-group">
+              <input
               type="submit"
               id="direct-settings-submit"
               name="direct-settings-submit"
               value="Change"
-            />
-            <input
-              type="submit"
-              id="stop-submit"
-              name="stop-submit"
-              value="Stop"
-            />
-          </div>
-        </fieldset>
-      </form>
-    </div>
-
-    <script type="text/javascript" src="home.js"></script>
-  </body>
-</html>
+              />
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Interval Training</legend>
+            <div class="labels-and-inputs">
+              <div class="interval-start-group">
+                <div class="interval-start-speed-container">
+                  <label for="interval-start-speed">Start Speed:</label>
+                  <input
+                  type="number"
+                  min="0"
+                  max="20"
+                  step="0.1"
+                  id="interval-start-speed"
+                  name="interval-start-speed"
+                  />
+                  <label for="interval-start-speed" class="input-postfix">mph</span>
+                  </div>
+                  <div class="interval-start-incline-container">
+                    <label for="interval-start-incline">Start Incline:</label>
+                    <input
+                    type="number"
+                    min="0"
+                    max="20"
+                    step="0.1"
+                    id="interval-start-incline"
+                    name="interval-start-incline"
+                    />
+                    <label for="interval-start-incline" class="input-postfix">&deg;&angle;</span>
+                    </div>
+                  </div>
+                  <div class="interval-group interval-end-group">
+                    <div class="interval-end-speed-container">
+                      <label for="interval-end-speed">End Speed:</label>
+                      <input
+                      type="number"
+                      min="0"
+                      max="20"
+                      step="0.1"
+                      id="interval-end-speed"
+                      name="interval-end-speed"
+                      />
+                      <label for="interval-end-speed" class="input-postfix">mph</span>
+                      </div>
+                      <div class="interval-end-incline-container">
+                        <label for="interval-end-incline">End Incline:</label>
+                        <input
+                        type="number"
+                        min="0"
+                        max="20"
+                        step="0.1"
+                        id="interval-end-incline"
+                        name="interval-end-incline"
+                        />
+                        <label for="interval-end-incline" class="input-postfix">&deg;&angle;</span>
+                        </div>
+                      </div>
+                      <div class="interval-cycle-time-container">
+                        <label for="interval-cycle-time">A full cycle taking:</label>
+                        <input
+                        type="number"
+                        value="20"
+                        min="4"
+                        step="2"
+                        id="interval-cycle-time"
+                        name="interval-cycle-time"
+                        />
+                        <label for="interval-cycle-time">minutes.</label>
+                      </div>
+                    </div>
+                    <div class="button-group">
+                      <input
+                      type="submit"
+                      id="interval-start-submit"
+                      name="interval-start-submit"
+                      value="Start Interval"
+                      />
+                    </div>
+                  </fieldset>
+                </form>
+                
+                <form id="stop-treadmill">
+                  <input
+                  type="submit"
+                  id="stop-submit"
+                  name="stop-submit"
+                  value="Stop" 
+                  />
+                </form>
+              </div>
+              
+              <script type="text/javascript" src="home.js"></script>
+            </body>
+            </html>
+            
