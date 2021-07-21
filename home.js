@@ -137,6 +137,12 @@ function loopSpeedAndInclineCalls(intervalSpeed = 6000) {
   );
 }
 
+function stopIntervalTraining() {
+  if (updateCycleIntervalId) {
+    clearInterval(updateCycleIntervalId);
+  }
+}
+
 function intervalTrainingStart() {
   const startSpeed = Number(intervalStartSpeedInput.value);
   const startIncline = Number(intervalStartInclineInput.value);
@@ -154,9 +160,7 @@ function intervalTrainingStart() {
   let goingUp = null;
   let minuteCounter = 0;
 
-  if (updateCycleIntervalId) {
-    clearInterval(updateCycleIntervalId);
-  }
+  stopIntervalTraining();
 
   const intervalLoop = () => {
     if (goingUp === null) {
@@ -217,9 +221,7 @@ checkAndSaveApiKeySubmit.addEventListener("click", (e) => {
 stopButton.addEventListener("click", (e) => {
   e.preventDefault();
 
-  if (updateCycleIntervalId) {
-    clearInterval(updateCycleIntervalId);
-  }
+  stopIntervalTraining();
 
   setSpeedAndIncline(0);
 });
@@ -227,6 +229,10 @@ stopButton.addEventListener("click", (e) => {
 // #region <direct-settings-listeners>
 changeSpeedAndInclineButton.addEventListener("click", (e) => {
   e.preventDefault();
+
+  // When a user manually sets the treadmill speed,
+  // if they were doing an interval, you should no longer run that interval.
+  stopIntervalTraining();
 
   setSpeedAndIncline();
 });
@@ -288,9 +294,7 @@ intervalEndInclineInput.addEventListener("focus", (e) => {
 startIntervalButton.addEventListener("click", (e) => {
   e.preventDefault();
 
-  if (updateCycleIntervalId) {
-    clearInterval(updateCycleIntervalId);
-  }
+  stopIntervalTraining();
 
   intervalTrainingStart();
 });
