@@ -91,9 +91,13 @@ function setSpeedAndIncline(
         res.text().then((speed) => {
           currentSpeed = Number(speed);
           currentSpeedLabel.innerHTML = Number(speed);
+        }).catch((err) => {
+          handleBadResponses(err);
         });
       }
-    );
+    ).catch((err) => {
+      handleBadResponses(err);
+    });
   }
 
   if (newGrade !== "") {
@@ -106,9 +110,13 @@ function setSpeedAndIncline(
         res.text().then((grade) => {
           currentIncline = Number(grade);
           currentInclineLabel.innerHTML = Number(grade);
+        }).catch((err) => {
+          handleBadResponses(err);
         });
       }
-    );
+    ).catch((err) => {
+      handleBadResponses(err);
+    });
   }
 }
 
@@ -119,7 +127,11 @@ const requestSpeedAndIncline = () => {
     res.text().then((speed) => {
       currentSpeed = Number(speed);
       currentSpeedLabel.innerHTML = Number(speed);
+    }).catch((err) => {
+      handleBadResponses(err);
     });
+  }).catch((err) => {
+    handleBadResponses(err);
   });
 
   fetch(`${apiEndpoint}/getIncline`, requestOptions).then((res) => {
@@ -128,7 +140,11 @@ const requestSpeedAndIncline = () => {
     res.text().then((grade) => {
       currentIncline = Number(grade);
       currentInclineLabel.innerHTML = Number(grade);
+    }).catch((err) => {
+      handleBadResponses(err);
     });
+  }).catch((err) => {
+    handleBadResponses(err);
   });
 };
 
