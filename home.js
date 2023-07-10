@@ -1,6 +1,6 @@
 const username = "admin";
 let apiKey = getApiKey();
-const apiEndpoint = "https://treadmill.nessdan.net/api";
+let apiEndpoint = getApiEndpoint();
 let requestOptions = {
   method: "POST",
   headers: {
@@ -17,6 +17,7 @@ let updateCycleIntervalId;
 const notAuthedSection = document.querySelector("#not-authed");
 const authedSection = document.querySelector("#authed");
 const apiKeyInput = document.querySelector("#api-key-input");
+const apiEndpointInput = document.querySelector("#api-endpoint-input");
 const checkAndSaveApiKeySubmit = document.querySelector("#api-form-submit");
 const currentSpeedLabel = document.querySelector("#current-speed");
 const currentInclineLabel = document.querySelector("#current-incline");
@@ -46,8 +47,15 @@ function getApiKey() {
   }
 }
 
-function setApiKey(newApiKey) {
+function getApiEndpoint() {
   if (localStorage) {
+    return localStorage.getItem("api-endpoint");
+  }
+}
+
+function setApi(newApiEndpoint, newApiKey) {
+  if (localStorage) {
+    apiEndpoint = newApiEndpoint;
     apiKey = newApiKey;
     requestOptions = {
       method: "POST",
@@ -56,13 +64,14 @@ function setApiKey(newApiKey) {
         "Content-Type": "text/html; charset=utf-8",
       },
     };
-    return localStorage.setItem("api-key", newApiKey);
+    localStorage.setItem("api-key", newApiKey);
+    localStorage.setItem("api-endpoint", newApiEndpoint);
   }
 }
 
 function handleBadResponses(res) {
-  if (res.status === 401) {
-    setApiKey("");
+  if (res.status !== 200) {
+    setApi("", "");
     clearInterval(fetchSpeedAndInclineIntervalId);
     showOnlyNotAuthedSection();
   }
@@ -214,7 +223,7 @@ function initialKickstart() {
 checkAndSaveApiKeySubmit.addEventListener("click", (e) => {
   e.preventDefault();
 
-  setApiKey(apiKeyInput.value);
+  setApi(apiEndpointInput.value, apiKeyInput.value);
   initialKickstart();
 });
 
