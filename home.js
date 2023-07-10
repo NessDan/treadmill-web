@@ -225,7 +225,7 @@ function showOnlyNotAuthedSection() {
 }
 
 function initialKickstart() {
-  if (apiKey) {
+  if (apiKey && apiEndpoint) {
     showOnlyAuthedSection();
     loopSpeedAndInclineCalls();
   } else {
@@ -278,7 +278,7 @@ inclineInput.addEventListener("focus", (e) => {
 // #region <treadmill-background-polling>
 window.addEventListener("blur", (e) => {
   // Slow down poll rate when unfocused
-  if (fetchSpeedAndInclineIntervalId) {
+  if (apiEndpoint && apiKey) {
     loopSpeedAndInclineCalls(30000);
   }
 });
