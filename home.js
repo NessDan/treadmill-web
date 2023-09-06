@@ -1,6 +1,6 @@
 const username = "admin";
 let apiKey = getApiKey();
-let apiEndpoint = getApiEndpoint();
+let apiEndpoint = "/api";
 let requestOptions = {
   method: "POST",
   headers: {
@@ -17,7 +17,6 @@ let updateCycleIntervalId;
 const notAuthedSection = document.querySelector("#not-authed");
 const authedSection = document.querySelector("#authed");
 const apiKeyInput = document.querySelector("#api-key-input");
-const apiEndpointInput = document.querySelector("#api-endpoint-input");
 const checkAndSaveApiKeySubmit = document.querySelector("#api-form-submit");
 const currentSpeedLabel = document.querySelector("#current-speed");
 const currentInclineLabel = document.querySelector("#current-incline");
@@ -47,15 +46,8 @@ function getApiKey() {
   }
 }
 
-function getApiEndpoint() {
+function setApi(newApiKey) {
   if (localStorage) {
-    return localStorage.getItem("api-endpoint");
-  }
-}
-
-function setApi(newApiEndpoint, newApiKey) {
-  if (localStorage) {
-    apiEndpoint = newApiEndpoint;
     apiKey = newApiKey;
     requestOptions = {
       method: "POST",
@@ -65,13 +57,12 @@ function setApi(newApiEndpoint, newApiKey) {
       },
     };
     localStorage.setItem("api-key", newApiKey);
-    localStorage.setItem("api-endpoint", newApiEndpoint);
   }
 }
 
 function handleBadResponses(res) {
   if (res.status !== 200) {
-    setApi("", "");
+    setApi("");
     clearInterval(fetchSpeedAndInclineIntervalId);
     showOnlyNotAuthedSection();
   }
@@ -82,70 +73,86 @@ function setSpeedAndIncline(
   newGrade = inclineInput.value
 ) {
   if (newSpeed !== "") {
-    fetch(`${apiEndpoint}/setSpeed?mph=${newSpeed}`, requestOptions).then(
-      (res) => {
+    fetch(`${apiEndpoint}/setSpeed?mph=${newSpeed}`, requestOptions)
+      .then((res) => {
         handleBadResponses(res);
 
         speedInput.value = "";
 
-        res.text().then((speed) => {
-          currentSpeed = Number(speed);
-          currentSpeedLabel.innerHTML = Number(speed);
-        }).catch((err) => {
-          handleBadResponses(err);
-        });
-      }
-    ).catch((err) => {
-      handleBadResponses(err);
-    });
+        res
+          .text()
+          .then((speed) => {
+            currentSpeed = Number(speed);
+            currentSpeedLabel.innerHTML = Number(speed);
+          })
+          .catch((err) => {
+            handleBadResponses(err);
+          });
+      })
+      .catch((err) => {
+        handleBadResponses(err);
+      });
   }
 
   if (newGrade !== "") {
-    fetch(`${apiEndpoint}/setIncline?grade=${newGrade}`, requestOptions).then(
-      (res) => {
+    fetch(`${apiEndpoint}/setIncline?grade=${newGrade}`, requestOptions)
+      .then((res) => {
         handleBadResponses(res);
 
         inclineInput.value = "";
 
-        res.text().then((grade) => {
-          currentIncline = Number(grade);
-          currentInclineLabel.innerHTML = Number(grade);
-        }).catch((err) => {
-          handleBadResponses(err);
-        });
-      }
-    ).catch((err) => {
-      handleBadResponses(err);
-    });
+        res
+          .text()
+          .then((grade) => {
+            currentIncline = Number(grade);
+            currentInclineLabel.innerHTML = Number(grade);
+          })
+          .catch((err) => {
+            handleBadResponses(err);
+          });
+      })
+      .catch((err) => {
+        handleBadResponses(err);
+      });
   }
 }
 
 const requestSpeedAndIncline = () => {
-  fetch(`${apiEndpoint}/getSpeed`, requestOptions).then((res) => {
-    handleBadResponses(res);
+  fetch(`${apiEndpoint}/getSpeed`, requestOptions)
+    .then((res) => {
+      handleBadResponses(res);
 
-    res.text().then((speed) => {
-      currentSpeed = Number(speed);
-      currentSpeedLabel.innerHTML = Number(speed);
-    }).catch((err) => {
+      res
+        .text()
+        .then((speed) => {
+          currentSpeed = Number(speed);
+          currentSpeedLabel.innerHTML = Number(speed);
+        })
+        .catch((err) => {
+          handleBadResponses(err);
+        });
+    })
+    .catch((err) => {
       handleBadResponses(err);
     });
-  }).catch((err) => {
-    handleBadResponses(err);
-  });
 
-  fetch(`${apiEndpoint}/getIncline`, requestOptions).then((res) => {
-    handleBadResponses(res);
+  fetch(`${apiEndpoint}/getIncline`, requestOptions)
+    .then((res) => {
+      handleBadResponses(res);
 
-    res.text().then((grade) => {
-      currentIncline = Number(grade);
-      currentInclineLabel.innerHTML = Number(grade);
-    }).catch((err) => {
+      res
+        .text()
+        .then((grade) => {
+          currentIncline = Number(grade);
+          currentInclineLabel.innerHTML = Number(grade);
+        })
+        .catch((err) => {
+          handleBadResponses(err);
+        });
+    })
+    .catch((err) => {
       handleBadResponses(err);
     });
-  }).catch((err) => {
-    handleBadResponses(err);
-  });
 };
 
 function loopSpeedAndInclineCalls(intervalSpeed = 6000) {
@@ -225,7 +232,7 @@ function showOnlyNotAuthedSection() {
 }
 
 function initialKickstart() {
-  if (apiKey && apiEndpoint) {
+  if (apiKey) {
     showOnlyAuthedSection();
     loopSpeedAndInclineCalls();
   } else {
@@ -239,7 +246,7 @@ function initialKickstart() {
 checkAndSaveApiKeySubmit.addEventListener("click", (e) => {
   e.preventDefault();
 
-  setApi(apiEndpointInput.value, apiKeyInput.value);
+  setApi(apiKeyInput.value);
   initialKickstart();
 });
 
@@ -278,7 +285,7 @@ inclineInput.addEventListener("focus", (e) => {
 // #region <treadmill-background-polling>
 window.addEventListener("blur", (e) => {
   // Slow down poll rate when unfocused
-  if (apiEndpoint && apiKey) {
+  if (apiKey) {
     loopSpeedAndInclineCalls(30000);
   }
 });
