@@ -1,10 +1,7 @@
-const username = "admin";
-let apiKey = getApiKey();
 let apiEndpoint = "/api";
 let requestOptions = {
   method: "POST",
   headers: {
-    Authorization: "Basic " + btoa(username + ":" + apiKey),
     "Content-Type": "text/html; charset=utf-8",
   },
 };
@@ -14,10 +11,6 @@ let fetchSpeedAndInclineIntervalId;
 let updateCycleIntervalId;
 
 // HTML Elements
-const notAuthedSection = document.querySelector("#not-authed");
-const authedSection = document.querySelector("#authed");
-const apiKeyInput = document.querySelector("#api-key-input");
-const checkAndSaveApiKeySubmit = document.querySelector("#api-form-submit");
 const currentSpeedLabel = document.querySelector("#current-speed");
 const currentInclineLabel = document.querySelector("#current-incline");
 // Direct Settings Inputs
@@ -40,31 +33,9 @@ const startIntervalButton = document.querySelector("#interval-start-submit");
 // Stop button
 const stopButton = document.querySelector("#stop-submit");
 
-function getApiKey() {
-  if (localStorage) {
-    return localStorage.getItem("api-key");
-  }
-}
-
-function setApi(newApiKey) {
-  if (localStorage) {
-    apiKey = newApiKey;
-    requestOptions = {
-      method: "POST",
-      headers: {
-        Authorization: "Basic " + btoa(username + ":" + apiKey),
-        "Content-Type": "text/html; charset=utf-8",
-      },
-    };
-    localStorage.setItem("api-key", newApiKey);
-  }
-}
-
 function handleBadResponses(res) {
   if (res.status !== 200) {
-    setApi("");
     clearInterval(fetchSpeedAndInclineIntervalId);
-    showOnlyNotAuthedSection();
   }
 }
 
@@ -221,35 +192,13 @@ function intervalTrainingStart() {
   intervalLoop();
 }
 
-function showOnlyAuthedSection() {
-  notAuthedSection.classList.add("hidden");
-  authedSection.classList.remove("hidden");
-}
-
-function showOnlyNotAuthedSection() {
-  notAuthedSection.classList.remove("hidden");
-  authedSection.classList.add("hidden");
-}
-
 function initialKickstart() {
-  if (apiKey) {
-    showOnlyAuthedSection();
-    loopSpeedAndInclineCalls();
-  } else {
-    showOnlyNotAuthedSection();
-  }
+  loopSpeedAndInclineCalls();
 }
 
 // ENTRYCODE!!!!!!!!!!!!!!!!!! LETS DO SOME LOGIC! WOOHOO!!!
 // ENTRYCODE!!!!!!!!!!!!!!!!!! LETS DO SOME LOGIC! WOOHOO!!!
 // ENTRYCODE!!!!!!!!!!!!!!!!!! LETS DO SOME LOGIC! WOOHOO!!!
-checkAndSaveApiKeySubmit.addEventListener("click", (e) => {
-  e.preventDefault();
-
-  setApi(apiKeyInput.value);
-  initialKickstart();
-});
-
 stopButton.addEventListener("click", (e) => {
   e.preventDefault();
 
@@ -285,9 +234,7 @@ inclineInput.addEventListener("focus", (e) => {
 // #region <treadmill-background-polling>
 window.addEventListener("blur", (e) => {
   // Slow down poll rate when unfocused
-  if (apiKey) {
-    loopSpeedAndInclineCalls(30000);
-  }
+  loopSpeedAndInclineCalls(30000);
 });
 
 window.addEventListener("focus", (e) => {
